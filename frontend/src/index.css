@@ -1,0 +1,62 @@
+
+body {
+  background: #f1f1f1;
+  margin: 0;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+  font-size: 30px;
+}
+
+.home {
+  margin: auto;
+  margin-top: 150px;
+  width: 800px;
+  height: 500px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+  background-color:darkgray;
+  border-radius: 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mostraAluno {
+  margin: auto;
+  margin-top: -20%;
+  text-align: center;
+  width: 90%;
+  padding: 10px;
+  flex: 40%;
+  position: relative;
+}
+
+.nome {
+  margin: auto;
+  font-size: 65px;
+  font-weight: bold;
+}
+
+.matricula {
+  font-size: 30px;
+  margin-top: 0%;
+}
+
+.titulo {
+  font-size: 80px;
+  font-weight: bolder;
+  flex: 30%;
+  margin-top: 5%;
+}
+
+.loading {
+  font-size: 50px;
+  margin-top: -5%;
+  flex: 40%;
+}
+
+/*
+* {
+  border: solid;
+  border-color: red;
+}
+*/
