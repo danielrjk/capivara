@@ -1,10 +1,30 @@
 const Aluno = require('../models/alunoModel')
 const mongoose = require('mongoose')
 const { writeFile, readFile } = require("fs")
-const { error } = require('console')
 
+// receber todos alunos
+const recebeAlunos = async (req, res) => {
+    const alunos = await Aluno.find({}).sort({ nome: 1 })
 
+    res.status(200).json(alunos)
+}
 
+// receber um aluno
+const recebeAluno = async (req, res) => {
+    const { id } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Aluno não encontrado' })
+    }
+
+    const aluno = await Aluno.findById(id)
+
+    if (!aluno) {
+        return res.status(404).json({ error: 'Aluno não encontrado' })
+    }
+
+    res.status(200).json(aluno)
+}
 
 // criar aluno
 const criarAluno = async (req, res) => {
@@ -33,9 +53,47 @@ const criarAluno = async (req, res) => {
     }
 }
 
+// editar aluno
+const editarAluno = async (req, res) => {
+    const { id } = req.params
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Aluno não encontrado' })
+    }
+
+    const aluno = await Aluno.findOneAndUpdate({ _id: id }, {
+        ...req.body
+    })
+
+    if (!aluno) {
+        return res.status(404).json({ error: 'Aluno não encontrado' })
+    }
+
+    res.status(200).json(aluno)
+}
+
+// deletar aluno
+const deletarAluno = async (req, res) => {
+    const { id } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Aluno não encontrado' })
+    }
+
+    const aluno = await Aluno.findOneAndDelete({ _id: id })
+
+    if (!aluno) {
+        return res.status(404).json({ error: 'Aluno não encontrado' })
+    }
+
+    res.status(200).json(aluno)
+}
 
 
 module.exports = {
-    criarAluno
+    recebeAlunos,
+    recebeAluno,
+    criarAluno,
+    editarAluno,
+    deletarAluno
 }

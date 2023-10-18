@@ -1,7 +1,6 @@
 const Aluno = require('../models/alunoModel')
 const mongoose = require('mongoose')
 const { writeFile, readFile } = require("fs")
-const { error } = require('console')
 
 // mandar hash da carteirinha pro sistema
 const leCarteirinha = async (req, res) => {
