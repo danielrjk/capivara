@@ -1,6 +1,5 @@
-const Aluno = require('../models/alunoModel')
-const mongoose = require('mongoose')
-const { writeFile, readFile } = require("fs")
+const Aluno = require("../models/alunoModel")
+const mongoose = require("mongoose")
 
 // receber todos alunos
 const recebeAlunos = async (req, res) => {
@@ -14,13 +13,13 @@ const recebeAluno = async (req, res) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Aluno não encontrado' })
+        return res.status(400).json({ error: "ID inválido" })
     }
 
     const aluno = await Aluno.findById(id)
 
     if (!aluno) {
-        return res.status(404).json({ error: 'Aluno não encontrado' })
+        return res.status(404).json({ error: "Aluno não encontrado" })
     }
 
     res.status(200).json(aluno)
@@ -33,16 +32,18 @@ const criarAluno = async (req, res) => {
     let emptyFields = []
 
     if (!nome) {
-        emptyFields.push('nome')
+        emptyFields.push("nome")
     }
     if (!matricula) {
-        emptyFields.push('matricula')
+        emptyFields.push("matricula")
     }
     if (!tag_id) {
-        emptyFields.push('tag_id')
+        emptyFields.push("tag_id")
     }
     if (emptyFields.lenght > 0) {
-        return res.status(400).json({ error: 'Preencha todos os campos', emptyFields })
+        return res
+            .status(400)
+            .json({ error: "Preencha todos os campos", emptyFields })
     }
 
     try {
@@ -58,15 +59,18 @@ const editarAluno = async (req, res) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Aluno não encontrado' })
+        return res.status(400).json({ error: "ID inválido" })
     }
 
-    const aluno = await Aluno.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
+    const aluno = await Aluno.findOneAndUpdate(
+        { _id: id },
+        {
+            ...req.body,
+        }
+    )
 
     if (!aluno) {
-        return res.status(404).json({ error: 'Aluno não encontrado' })
+        return res.status(404).json({ error: "Aluno não encontrado" })
     }
 
     res.status(200).json(aluno)
@@ -77,23 +81,22 @@ const deletarAluno = async (req, res) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Aluno não encontrado' })
+        return res.statusstatus(400).json({ error: "ID inválido" })
     }
 
     const aluno = await Aluno.findOneAndDelete({ _id: id })
 
     if (!aluno) {
-        return res.status(404).json({ error: 'Aluno não encontrado' })
+        return res.status(404).json({ error: "Aluno não encontrado" })
     }
 
     res.status(200).json(aluno)
 }
-
 
 module.exports = {
     recebeAlunos,
     recebeAluno,
     criarAluno,
     editarAluno,
-    deletarAluno
+    deletarAluno,
 }
