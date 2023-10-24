@@ -26,10 +26,10 @@ router.delete("/:id", deletaProfessor)
 router.patch("/:id", editaProfessor)
 
 // POST -> realiza login no sistema
-//* router.post("/login", loginSistema)
+//TODO router.post("/login", loginSistema)
 
 // POST -> realiza logout no sistema
-//* router.post("/logout", logoutSistema)
+//TODO router.post("/logout", logoutSistema)
 
 
 module.exports = router

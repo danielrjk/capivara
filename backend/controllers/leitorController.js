@@ -11,37 +11,43 @@ const leCarteirinha = async (req, res) => {
 
         if (alunoResultado.length > 0) {
             console.log("Aluno encontrado:", alunoResultado)
-            // enviar dados do aluno pra fila
+
+            const turmas = alunoResultado.turmas
+            if (!turmas.includes(turmaAtual)) {
+                //TODO patch edita aluno
+            }
+            
+            
+
+        } else {
+            console.log("Aluno nao encontrado")
+            
+            //! enviar para fila de criacao
             readFile("./src/filaAlunos.json", (error, data) => {
                 if (error) {
-                    console.error(error)
-                    return
+                    return res.status(500).json(error)
                 }
 
-                const parsedData = JSON.parse(data)
+                const parsedData = json.parse(data)
 
                 if (!parsedData.fila) {
                     parsedData.fila = []
                 }
 
-                parsedData.fila.unshift(alunoResultado[0])
+                parsedData.fila.push(tag_id)
 
                 writeFile(
                     "./src/filaAlunos.json",
                     JSON.stringify(parsedData, null, 2),
                     (err) => {
                         if (err) {
-                            return console.error("Erro ao adicionar na fila")
+                            return res.status(500).json(err)
                         }
                     }
                 )
             })
 
-            res.status(200).json(alunoResultado[0])
-        } else {
-            console.log("Aluno nao encontrado")
-            res.status(404).json({ msg: "Aluno nao encontrado" })
-            // adicionar aluno
+            res.status(200).json({msg: "Aluno enviado para fila"})
         }
     } catch (err) {
         console.error("Ocorreu um erro:", err)
