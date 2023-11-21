@@ -21,8 +21,9 @@ const professorSchema = new Schema(
         },
         turmas: {
             type: [String],
-            required: false,
-        }
+            required: true,
+            default: [],
+        },
     },
     { timestamps: true }
 )

@@ -14,6 +14,6 @@ router.post("/", leCarteirinha)
 router.get("/", lerFila)
 
 // DELETE -> limpar a fila
-router.delete("/", limparFila)
+router.delete("/:classroom_id", limparFila)
 
 module.exports = router

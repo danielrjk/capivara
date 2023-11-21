@@ -1,20 +1,6 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
-const aulaSchema = new Schema(
-    {
-        data: {
-            type: String,
-            required: true,
-        },
-        alunos_presentes: {
-            type: [String],
-            required: true,
-        },
-    },
-    { timestamps: true }
-)
-
 const turmaSchema = new Schema(
     {
         nome: {
@@ -29,24 +15,29 @@ const turmaSchema = new Schema(
             type: String,
             required: true,
         },
+        sala: {
+            type: String,
+            required: true,
+        },
         professor: {
             type: String,
             required: true,
         },
-        alunos: {
-            type: [String],
+        inicio: {
+            type: Number,
             required: true,
         },
-        horario: {
-            type: String,
+        termino: {
+            type: Number,
             required: true,
         },
         dias: {
-            type: [String],
+            type: [Number],
             required: true,
         },
         aulas: {
-            type: [aulaSchema],
+            type: Object,
+            default: {},
             required: true,
         },
     },

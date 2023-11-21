@@ -1,4 +1,5 @@
 const Professor = require("../models/professorModel")
+const Turma = require("../models/turmaModel")
 const mongoose = require("mongoose")
 
 // receber todos professores
@@ -18,7 +19,7 @@ const recebeProfessor = async (req, res) => {
 
     const professor = await Professor.findById(id)
 
-    if (!aluno) {
+    if (!professor) {
         return res.status(404).json({ error: "Professor não encontrado" })
     }
 
@@ -98,7 +99,13 @@ const deletaProfessor = async (req, res) => {
         return res.status(404).json({ error: "Professor não encontrado" })
     }
 
-    res.status(200).json(professor)
+    const turmas = professor.turmas
+
+    for (var i = 0; i < turmas.length; i++) {
+        await Turma.deleteOne({ _id: turmas[i] })
+    }
+
+    res.status(200).json({ professor: professor, turmas: turmas})
 }
 
 // TODO: login no sistema

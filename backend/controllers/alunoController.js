@@ -3,26 +3,34 @@ const mongoose = require("mongoose")
 
 // receber todos alunos
 const recebeAlunos = async (req, res) => {
-    const alunos = await Aluno.find({}).sort({ nome: 1 })
+    try {
+        const alunos = await Aluno.find({}).sort({ nome: 1 })
 
-    res.status(200).json(alunos)
+        return res.status(200).json(alunos)
+    } catch (err) {
+        return res.status(500).json({ error: err.message })
+    }
 }
 
 // receber um aluno
 const recebeAluno = async (req, res) => {
     const { id } = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: "ID inválido" })
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "ID inválido" })
+        }
+
+        const aluno = await Aluno.findById(id)
+
+        if (!aluno) {
+            return res.status(404).json({ error: "Aluno não encontrado" })
+        }
+
+        return res.status(200).json(aluno)
+    } catch (err) {
+        return res.status(500).json({ error: err.message })
     }
-
-    const aluno = await Aluno.findById(id)
-
-    if (!aluno) {
-        return res.status(404).json({ error: "Aluno não encontrado" })
-    }
-
-    res.status(200).json(aluno)
 }
 
 // criar aluno
@@ -31,26 +39,26 @@ const criarAluno = async (req, res) => {
 
     let emptyFields = []
 
-    if (!nome) {
-        emptyFields.push("nome")
-    }
-    if (!matricula) {
-        emptyFields.push("matricula")
-    }
-    if (!tag_id) {
-        emptyFields.push("tag_id")
-    }
-    if (emptyFields.lenght > 0) {
-        return res
-            .status(400)
-            .json({ error: "Preencha todos os campos", emptyFields })
-    }
-
     try {
+        if (!nome) {
+            emptyFields.push("nome")
+        }
+        if (!matricula) {
+            emptyFields.push("matricula")
+        }
+        if (!tag_id) {
+            emptyFields.push("tag_id")
+        }
+        if (emptyFields.lenght > 0) {
+            return res
+                .status(400)
+                .json({ error: "Preencha todos os campos", emptyFields })
+        }
         const aluno = await Aluno.create({ nome, matricula, tag_id })
-        res.status(200).json(aluno)
+
+        return res.status(200).json(aluno)
     } catch (err) {
-        res.status(400).json({ error: err.message })
+        return res.status(500).json({ error: err.message })
     }
 }
 
@@ -58,39 +66,47 @@ const criarAluno = async (req, res) => {
 const editarAluno = async (req, res) => {
     const { id } = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: "ID inválido" })
-    }
-
-    const aluno = await Aluno.findOneAndUpdate(
-        { _id: id },
-        {
-            ...req.body,
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "ID inválido" })
         }
-    )
 
-    if (!aluno) {
-        return res.status(404).json({ error: "Aluno não encontrado" })
+        const aluno = await Aluno.findOneAndUpdate(
+            { _id: id },
+            {
+                ...req.body,
+            }
+        )
+
+        if (!aluno) {
+            return res.status(404).json({ error: "Aluno não encontrado" })
+        }
+
+        return res.status(200).json(aluno)
+    } catch (err) {
+        return res.stauts(500).json({ error: err.message })
     }
-
-    res.status(200).json(aluno)
 }
 
 // deletar aluno
 const deletarAluno = async (req, res) => {
     const { id } = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.statusstatus(400).json({ error: "ID inválido" })
+    try {
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.statusstatus(400).json({ error: "ID inválido" })
+        }
+
+        const aluno = await Aluno.findOneAndDelete({ _id: id })
+
+        if (!aluno) {
+            return res.status(404).json({ error: "Aluno não encontrado" })
+        }
+
+        res.status(200).json(aluno)
+    } catch (err) {
+        return res.status(500).json({ error: err.mesage })
     }
-
-    const aluno = await Aluno.findOneAndDelete({ _id: id })
-
-    if (!aluno) {
-        return res.status(404).json({ error: "Aluno não encontrado" })
-    }
-
-    res.status(200).json(aluno)
 }
 
 module.exports = {

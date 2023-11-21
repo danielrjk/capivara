@@ -9,12 +9,12 @@ const Home = () => {
 
     const ultimoAluno = async () => {
         try {
-            const response = await fetch('http://localhost:4000/api/alunos/ultimo-aluno/')
+            const response = await fetch('http://localhost:4000/api/leitor/')
             if (!response.ok) {
                 throw new Error("Ocorreu um erro ao ler o ultimo aluno.")
             }
             const alunoData = await response.json()
-            setAluno(alunoData)
+            setAluno(alunoData[0])
             //console.log(aluno.nome, aluno.matricula)
         } catch (err) {
             //console.error(err.message)

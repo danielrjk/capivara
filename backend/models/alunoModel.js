@@ -17,7 +17,8 @@ const alunoSchema = new Schema(
         },
         turmas: {
             type: [String],
-            required: false,
+            required: true,
+            default: [],
         }
     },
     { timestamps: true }
