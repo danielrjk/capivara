@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   });
 
 // routes
-app.use('/api/alunos', alunosRoutes)
+app.use('/api/aluno', alunosRoutes)
 app.use('/api/leitor', leitorRoutes)
 app.use('/api/professor', professorRoutes)
 app.use('/api/turma', turmaRoutes)

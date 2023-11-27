@@ -19,7 +19,7 @@ const alunoSchema = new Schema(
             type: [String],
             required: true,
             default: [],
-        }
+        } // TODO remover turmas
     },
     { timestamps: true }
 )
