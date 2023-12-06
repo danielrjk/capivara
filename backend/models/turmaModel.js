@@ -23,6 +23,11 @@ const turmaSchema = new Schema(
             type: String,
             required: true,
         },
+        alunos: {
+            type: [String],
+            default: [],
+            required: false
+        },
         inicio: {
             type: Number,
             required: true,

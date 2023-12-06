@@ -82,7 +82,14 @@ const leCarteirinha = async (req, res) => {
                 aulaAtual.aulas[data_string] = []
             }
             aulaAtual.aulas[data_string].push(alunoResultado.matricula)
+
+            if (!aulaAtual.alunos.includes(alunoResultado.matricula)) {
+                aulaAtual.alunos.push(alunoResultado.matricula)
+            }
+
             aulaAtual.save()
+            
+            return res.status(200).json({ nome: alunoResultado.nome.split(" ")[0].normalize('NFD').replace(/[\u0300-\u036f]/g, "") })
         } else {
             const filaAlunos = readFileSync("./src/filaAlunos.json")
             const filaAlunosParse = JSON.parse(filaAlunos)
@@ -91,9 +98,9 @@ const leCarteirinha = async (req, res) => {
                 "./src/filaAlunos.json",
                 JSON.stringify(filaAlunosParse, null, 2)
             )
+            return res.status(200).json({msg: "Aluno enviado a fila"})
         }
 
-        return res.status(200).json({ msg: "sucesoo" })
     } catch (err) {
         return res.status(500).json({ msg: err.message })
     }
